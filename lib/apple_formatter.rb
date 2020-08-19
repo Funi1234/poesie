@@ -44,6 +44,8 @@ module Poesie
         # otherwise (e.g. asian language where only key in hash will be "other", not "one"), then use the first entry
         if definition.is_a? Hash
           definition = definition["one"] || definition.values.first
+          # Check if definition is empty and skip
+          next if (definition.nil? || definition.empty?)
         end
 
         definition = Poesie::process(definition, substitutions)
@@ -51,7 +53,7 @@ module Poesie
                     .gsub("\n", '\n') # Replace actual CRLF with '\n'
                     .gsub('"', '\\"') # Escape quotes
                     .gsub(/%(\d+\$)?s/, '%\1@') # replace %s with %@ for iOS
-        out_lines << %Q(// CONTEXT: #{context.gsub("\n", '\n')}) unless context.empty?
+        out_lines << %Q(// #{context.gsub("\n", '\n')}) unless context.empty?
         out_lines << %Q("#{term}" = "#{definition}";)
       end
 
@@ -101,11 +103,12 @@ module Poesie
               (term, term_plural, definition) = ['term', 'term_plural', 'definition'].map { |k| term[k] }
 
               # Filter terms and update stats
-              next if (term.nil? || term.empty? || definition.nil?) && stats[:nil] << term
+              next if (term.nil? || term.empty? || definition.nil? ) && stats[:nil] << term
               next if (term =~ exclude) && stats[:excluded] += 1
               next unless definition.is_a? Hash
+              next if (definition.values.first.nil? || definition.values.first.empty?)
               stats[:count] += 1
-
+              
               key = term_plural || term
 
               root_node.key(key)
