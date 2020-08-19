@@ -32,7 +32,7 @@ module Poesie
             (term, definition, plurals, comment, context) = ['term', 'definition', 'term_plural', 'comment', 'context'].map { |k| term[k] }
             
             # Filter terms and update stats
-            next if (term.nil? || term.empty? || definition.nil?) && stats[:nil] << term
+            next if (term.nil? || term.empty? || definition.nil? || definition.empty?) && stats[:nil] << term
             next if (term =~ exclude) && stats[:excluded] += 1
             stats[:count] += 1
 
