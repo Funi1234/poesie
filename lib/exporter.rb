@@ -42,7 +42,7 @@ module Poesie
     #
     def generate_export_uri(lang)
       uri = URI('https://api.poeditor.com/v2/projects/export')
-      res = Net::HTTP.post_form(uri, 'api_token' => @api_token, 'id' => @project_id, 'type' => 'json', 'language' => lang)
+      res = Net::HTTP.post_form(uri, 'api_token' => @api_token, 'id' => @project_id, 'type' => 'json', 'language' => lang, 'filters' => ["translated"])
       json = JSON.parse(res.body)
       unless json['response']['status'] == 'success'
         r = json['response']
