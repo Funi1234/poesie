@@ -47,6 +47,7 @@ module Poesie
             else
               resources_node.plurals(:name => plurals) do |plurals_node|
                 definition.each do |plural_quantity, plural_value|
+                  next if (plural_value.nil? || plural_value.empty?)
                   plural_value = Poesie::process(plural_value, substitutions).gsub('"', '\\"')
                   plurals_node.item("\"#{plural_value}\"", :quantity => plural_quantity)
                 end

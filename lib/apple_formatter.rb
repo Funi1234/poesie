@@ -108,7 +108,7 @@ module Poesie
               next unless definition.is_a? Hash
               next if (definition.values.first.nil? || definition.values.first.empty?)
               stats[:count] += 1
-              
+
               key = term_plural || term
 
               root_node.key(key)
